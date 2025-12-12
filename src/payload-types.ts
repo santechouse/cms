@@ -64,11 +64,14 @@ export type SupportedTimezones =
 export interface Config {
   auth: {
     users: UserAuthOperations;
+    'third-party-access': ThirdPartyAccessAuthOperations;
   };
   blocks: {};
   collections: {
     users: User;
     media: Media;
+    products: Product;
+    'third-party-access': ThirdPartyAccess;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,20 +81,27 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
+    'third-party-access': ThirdPartyAccessSelect<false> | ThirdPartyAccessSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('ru' | 'uz') | ('ru' | 'uz')[];
   globals: {};
   globalsSelect: {};
-  locale: null;
-  user: User & {
-    collection: 'users';
-  };
+  locale: 'ru' | 'uz';
+  user:
+    | (User & {
+        collection: 'users';
+      })
+    | (ThirdPartyAccess & {
+        collection: 'third-party-access';
+      });
   jobs: {
     tasks: unknown;
     workflows: unknown;
@@ -115,12 +125,30 @@ export interface UserAuthOperations {
     password: string;
   };
 }
+export interface ThirdPartyAccessAuthOperations {
+  forgotPassword: {
+    email: string;
+    password: string;
+  };
+  login: {
+    email: string;
+    password: string;
+  };
+  registerFirstUser: {
+    email: string;
+    password: string;
+  };
+  unlock: {
+    email: string;
+    password: string;
+  };
+}
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -144,7 +172,7 @@ export interface User {
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: number;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -160,10 +188,116 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: number;
+  /**
+   * The unique identifier from Medusa
+   */
+  medusa_id: string;
+  /**
+   * The product title
+   */
+  title: string;
+  /**
+   * Product subtitle
+   */
+  subtitle?: string | null;
+  /**
+   * Detailed product description
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Product thumbnail image
+   */
+  thumbnail?: (number | null) | Media;
+  /**
+   * Gallery of product images
+   */
+  images?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * SEO-related fields for better search visibility
+   */
+  seo?: {
+    meta_title?: string | null;
+    meta_description?: string | null;
+    meta_keywords?: string | null;
+  };
+  options?:
+    | {
+        title: string;
+        /**
+         * The unique identifier for the option from Medusa
+         */
+        medusa_id: string;
+        id?: string | null;
+      }[]
+    | null;
+  variants?:
+    | {
+        title: string;
+        /**
+         * The unique identifier for the variant from Medusa
+         */
+        medusa_id: string;
+        option_values?:
+          | {
+              /**
+               * The unique identifier for the option value from Medusa
+               */
+              medusa_id: string;
+              /**
+               * The unique identifier for the option from Medusa
+               */
+              medusa_option_id: string;
+              value: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "third-party-access".
+ */
+export interface ThirdPartyAccess {
+  id: number;
+  updatedAt: string;
+  createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string;
+  id: number;
   key: string;
   data:
     | {
@@ -180,21 +314,34 @@ export interface PayloadKv {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
         relationTo: 'users';
-        value: string | User;
+        value: number | User;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: number | Product;
+      } | null)
+    | ({
+        relationTo: 'third-party-access';
+        value: number | ThirdPartyAccess;
       } | null);
   globalSlug?: string | null;
-  user: {
-    relationTo: 'users';
-    value: string | User;
-  };
+  user:
+    | {
+        relationTo: 'users';
+        value: number | User;
+      }
+    | {
+        relationTo: 'third-party-access';
+        value: number | ThirdPartyAccess;
+      };
   updatedAt: string;
   createdAt: string;
 }
@@ -203,11 +350,16 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
-  user: {
-    relationTo: 'users';
-    value: string | User;
-  };
+  id: number;
+  user:
+    | {
+        relationTo: 'users';
+        value: number | User;
+      }
+    | {
+        relationTo: 'third-party-access';
+        value: number | ThirdPartyAccess;
+      };
   key?: string | null;
   value?:
     | {
@@ -226,7 +378,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -271,6 +423,65 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  medusa_id?: T;
+  title?: T;
+  subtitle?: T;
+  description?: T;
+  thumbnail?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  seo?:
+    | T
+    | {
+        meta_title?: T;
+        meta_description?: T;
+        meta_keywords?: T;
+      };
+  options?:
+    | T
+    | {
+        title?: T;
+        medusa_id?: T;
+        id?: T;
+      };
+  variants?:
+    | T
+    | {
+        title?: T;
+        medusa_id?: T;
+        option_values?:
+          | T
+          | {
+              medusa_id?: T;
+              medusa_option_id?: T;
+              value?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "third-party-access_select".
+ */
+export interface ThirdPartyAccessSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  enableAPIKey?: T;
+  apiKey?: T;
+  apiKeyIndex?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
