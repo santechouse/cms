@@ -13,6 +13,7 @@ export const Products: CollectionConfig = {
       label: 'Medusa Product ID',
       required: true,
       unique: true,
+      localized: false,
       admin: {
         description: 'The unique identifier from Medusa',
         hidden: true, // Hide this field in the admin UI
@@ -50,33 +51,6 @@ export const Products: CollectionConfig = {
         description: 'Detailed product description',
       },
       localized: true,
-    },
-    {
-      name: 'thumbnail',
-      type: 'upload',
-      relationTo: 'media' as any,
-      label: 'Thumbnail',
-      required: false,
-      admin: {
-        description: 'Product thumbnail image',
-      },
-    },
-    {
-      name: 'images',
-      type: 'array',
-      label: 'Product Images',
-      required: false,
-      fields: [
-        {
-          name: 'image',
-          type: 'upload',
-          relationTo: 'media' as any,
-          required: true,
-        },
-      ],
-      admin: {
-        description: 'Gallery of product images',
-      },
     },
     {
       name: 'seo',
@@ -159,19 +133,20 @@ export const Products: CollectionConfig = {
     {
       name: 'variants',
       type: 'array',
+      localized: true,
       fields: [
         {
           name: 'title',
           type: 'text',
           label: 'Variant Title',
           required: true,
-          localized: true,
         },
         {
           name: 'medusa_id',
           type: 'text',
           label: 'Medusa Variant ID',
           required: true,
+          localized: false,
           admin: {
             description: 'The unique identifier for the variant from Medusa',
             hidden: true, // Hide this field in the admin UI

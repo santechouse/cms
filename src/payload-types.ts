@@ -223,19 +223,6 @@ export interface Product {
     [k: string]: unknown;
   } | null;
   /**
-   * Product thumbnail image
-   */
-  thumbnail?: (number | null) | Media;
-  /**
-   * Gallery of product images
-   */
-  images?:
-    | {
-        image: number | Media;
-        id?: string | null;
-      }[]
-    | null;
-  /**
    * SEO-related fields for better search visibility
    */
   seo?: {
@@ -433,13 +420,6 @@ export interface ProductsSelect<T extends boolean = true> {
   title?: T;
   subtitle?: T;
   description?: T;
-  thumbnail?: T;
-  images?:
-    | T
-    | {
-        image?: T;
-        id?: T;
-      };
   seo?:
     | T
     | {
