@@ -84,13 +84,13 @@ export const Products: CollectionConfig = {
     {
       name: 'options',
       type: 'array',
-      localized: true,
       fields: [
         {
           name: 'title',
           type: 'text',
           label: 'Option Title',
           required: true,
+          localized: true,
         },
         {
           name: 'medusa_id',
@@ -133,13 +133,13 @@ export const Products: CollectionConfig = {
     {
       name: 'variants',
       type: 'array',
-      localized: true,
       fields: [
         {
           name: 'title',
           type: 'text',
           label: 'Variant Title',
           required: true,
+          localized: true,
         },
         {
           name: 'medusa_id',
@@ -158,7 +158,6 @@ export const Products: CollectionConfig = {
         {
           name: 'option_values',
           type: 'array',
-          localized: true,
           fields: [
             {
               name: 'medusa_id',
@@ -193,6 +192,7 @@ export const Products: CollectionConfig = {
               type: 'text',
               label: 'Value',
               required: true,
+              localized: true,
             },
           ],
         },
