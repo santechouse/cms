@@ -72,6 +72,7 @@ export interface Config {
     media: Media;
     products: Product;
     'third-party-access': ThirdPartyAccess;
+    banners: Banner;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -83,6 +84,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
     'third-party-access': ThirdPartyAccessSelect<false> | ThirdPartyAccessSelect<true>;
+    banners: BannersSelect<false> | BannersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -281,6 +283,20 @@ export interface ThirdPartyAccess {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "banners".
+ */
+export interface Banner {
+  id: number;
+  link: string;
+  image: number | Media;
+  isActive?: boolean | null;
+  startDate: string;
+  endDate: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -318,6 +334,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'third-party-access';
         value: number | ThirdPartyAccess;
+      } | null)
+    | ({
+        relationTo: 'banners';
+        value: number | Banner;
       } | null);
   globalSlug?: string | null;
   user:
@@ -462,6 +482,19 @@ export interface ThirdPartyAccessSelect<T extends boolean = true> {
   enableAPIKey?: T;
   apiKey?: T;
   apiKeyIndex?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "banners_select".
+ */
+export interface BannersSelect<T extends boolean = true> {
+  link?: T;
+  image?: T;
+  isActive?: T;
+  startDate?: T;
+  endDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
