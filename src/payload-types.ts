@@ -73,6 +73,7 @@ export interface Config {
     products: Product;
     'third-party-access': ThirdPartyAccess;
     banners: Banner;
+    'brand-section': BrandSection;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -85,6 +86,7 @@ export interface Config {
     products: ProductsSelect<false> | ProductsSelect<true>;
     'third-party-access': ThirdPartyAccessSelect<false> | ThirdPartyAccessSelect<true>;
     banners: BannersSelect<false> | BannersSelect<true>;
+    'brand-section': BrandSectionSelect<false> | BrandSectionSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -297,6 +299,22 @@ export interface Banner {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brand-section".
+ */
+export interface BrandSection {
+  id: number;
+  title: string;
+  brands: {
+    name: string;
+    logo?: (number | null) | Media;
+    link: string;
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -338,6 +356,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'banners';
         value: number | Banner;
+      } | null)
+    | ({
+        relationTo: 'brand-section';
+        value: number | BrandSection;
       } | null);
   globalSlug?: string | null;
   user:
@@ -493,6 +515,23 @@ export interface BannersSelect<T extends boolean = true> {
   isActive?: T;
   startDate?: T;
   endDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brand-section_select".
+ */
+export interface BrandSectionSelect<T extends boolean = true> {
+  title?: T;
+  brands?:
+    | T
+    | {
+        name?: T;
+        logo?: T;
+        link?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

@@ -10,6 +10,7 @@ import { Media } from './collections/Media'
 import { Products } from './collections/Product'
 import { ThirdPartyAccess } from './collections/ThirdPartyAccess'
 import { Banner } from './collections/Banner'
+import { BrandSection } from './collections/BrandSection'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -21,7 +22,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Products, ThirdPartyAccess, Banner],
+  collections: [Users, Media, Products, ThirdPartyAccess, Banner, BrandSection],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
