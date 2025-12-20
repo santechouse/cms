@@ -1,7 +1,7 @@
 import { CollectionConfig } from 'payload'
 
-export const BrandSection: CollectionConfig = {
-  slug: 'brand-section',
+export const FeaturedBrands: CollectionConfig = {
+  slug: 'featured-brands',
   fields: [
     {
       name: 'title',
@@ -21,7 +21,6 @@ export const BrandSection: CollectionConfig = {
           label: 'Brand Name',
           type: 'text',
           required: true,
-          localized: true,
         },
         {
           name: 'logo',

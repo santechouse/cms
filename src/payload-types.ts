@@ -73,7 +73,7 @@ export interface Config {
     products: Product;
     'third-party-access': ThirdPartyAccess;
     banners: Banner;
-    'brand-section': BrandSection;
+    'featured-brands': FeaturedBrand;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -86,7 +86,7 @@ export interface Config {
     products: ProductsSelect<false> | ProductsSelect<true>;
     'third-party-access': ThirdPartyAccessSelect<false> | ThirdPartyAccessSelect<true>;
     banners: BannersSelect<false> | BannersSelect<true>;
-    'brand-section': BrandSectionSelect<false> | BrandSectionSelect<true>;
+    'featured-brands': FeaturedBrandsSelect<false> | FeaturedBrandsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -299,9 +299,9 @@ export interface Banner {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "brand-section".
+ * via the `definition` "featured-brands".
  */
-export interface BrandSection {
+export interface FeaturedBrand {
   id: number;
   title: string;
   brands: {
@@ -358,8 +358,8 @@ export interface PayloadLockedDocument {
         value: number | Banner;
       } | null)
     | ({
-        relationTo: 'brand-section';
-        value: number | BrandSection;
+        relationTo: 'featured-brands';
+        value: number | FeaturedBrand;
       } | null);
   globalSlug?: string | null;
   user:
@@ -520,9 +520,9 @@ export interface BannersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "brand-section_select".
+ * via the `definition` "featured-brands_select".
  */
-export interface BrandSectionSelect<T extends boolean = true> {
+export interface FeaturedBrandsSelect<T extends boolean = true> {
   title?: T;
   brands?:
     | T
