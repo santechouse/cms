@@ -18,9 +18,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   DROP TABLE "products_variants_locales" CASCADE;
   DROP TABLE "products" CASCADE;
   DROP TABLE "products_locales" CASCADE;
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_products_fk";
+  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT IF EXISTS "payload_locked_documents_rels_products_fk";
   
-  DROP INDEX "payload_locked_documents_rels_products_id_idx";
+  DROP INDEX IF EXISTS "payload_locked_documents_rels_products_id_idx";
   ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "products_id";`)
 }
 

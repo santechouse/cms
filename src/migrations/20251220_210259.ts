@@ -30,9 +30,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   DROP TABLE "brand_section_brands" CASCADE;
   DROP TABLE "brand_section" CASCADE;
   DROP TABLE "brand_section_locales" CASCADE;
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_brand_section_fk";
+  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT IF EXISTS "payload_locked_documents_rels_brand_section_fk";
   
-  DROP INDEX "payload_locked_documents_rels_brand_section_id_idx";
+  DROP INDEX IF EXISTS "payload_locked_documents_rels_brand_section_id_idx";
   ALTER TABLE "payload_locked_documents_rels" ADD COLUMN "featured_brands_id" integer;
   ALTER TABLE "featured_brands_brands" ADD CONSTRAINT "featured_brands_brands_logo_id_media_id_fk" FOREIGN KEY ("logo_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "featured_brands_brands" ADD CONSTRAINT "featured_brands_brands_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."featured_brands"("id") ON DELETE cascade ON UPDATE no action;
@@ -78,9 +78,9 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "featured_brands_brands" CASCADE;
   DROP TABLE "featured_brands" CASCADE;
   DROP TABLE "featured_brands_locales" CASCADE;
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_featured_brands_fk";
+  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT IF EXISTS "payload_locked_documents_rels_featured_brands_fk";
   
-  DROP INDEX "payload_locked_documents_rels_featured_brands_id_idx";
+  DROP INDEX IF EXISTS "payload_locked_documents_rels_featured_brands_id_idx";
   ALTER TABLE "payload_locked_documents_rels" ADD COLUMN "brand_section_id" integer;
   ALTER TABLE "brand_section_brands" ADD CONSTRAINT "brand_section_brands_logo_id_media_id_fk" FOREIGN KEY ("logo_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
   ALTER TABLE "brand_section_brands" ADD CONSTRAINT "brand_section_brands_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."brand_section"("id") ON DELETE cascade ON UPDATE no action;
