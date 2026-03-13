@@ -8,7 +8,6 @@ import { s3Storage } from '@payloadcms/storage-s3'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
-import { Products } from './collections/Product'
 import { ThirdPartyAccess } from './collections/ThirdPartyAccess'
 import { Banner } from './collections/Banner'
 import { FeaturedBrands } from './collections/FeaturedBrands'
@@ -23,7 +22,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Products, ThirdPartyAccess, Banner, FeaturedBrands],
+  collections: [Users, Media, ThirdPartyAccess, Banner, FeaturedBrands],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
