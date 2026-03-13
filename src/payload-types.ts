@@ -70,7 +70,6 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
-    products: Product;
     'third-party-access': ThirdPartyAccess;
     banners: Banner;
     'featured-brands': FeaturedBrand;
@@ -83,7 +82,6 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    products: ProductsSelect<false> | ProductsSelect<true>;
     'third-party-access': ThirdPartyAccessSelect<false> | ThirdPartyAccessSelect<true>;
     banners: BannersSelect<false> | BannersSelect<true>;
     'featured-brands': FeaturedBrandsSelect<false> | FeaturedBrandsSelect<true>;
@@ -192,87 +190,6 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products".
- */
-export interface Product {
-  id: number;
-  /**
-   * The unique identifier from Medusa
-   */
-  medusa_id: string;
-  /**
-   * The product title
-   */
-  title: string;
-  /**
-   * Product subtitle
-   */
-  subtitle?: string | null;
-  /**
-   * Detailed product description
-   */
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  /**
-   * SEO-related fields for better search visibility
-   */
-  seo?: {
-    meta_title?: string | null;
-    meta_description?: string | null;
-    meta_keywords?: string | null;
-  };
-  options?:
-    | {
-        title: string;
-        /**
-         * The unique identifier for the option from Medusa
-         */
-        medusa_id: string;
-        id?: string | null;
-      }[]
-    | null;
-  variants?:
-    | {
-        title: string;
-        /**
-         * The unique identifier for the variant from Medusa
-         */
-        medusa_id: string;
-        option_values?:
-          | {
-              /**
-               * The unique identifier for the option value from Medusa
-               */
-              medusa_id: string;
-              /**
-               * The unique identifier for the option from Medusa
-               */
-              medusa_option_id: string;
-              value: string;
-              id?: string | null;
-            }[]
-          | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "third-party-access".
  */
 export interface ThirdPartyAccess {
@@ -344,10 +261,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
-      } | null)
-    | ({
-        relationTo: 'products';
-        value: number | Product;
       } | null)
     | ({
         relationTo: 'third-party-access';
@@ -452,47 +365,6 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "products_select".
- */
-export interface ProductsSelect<T extends boolean = true> {
-  medusa_id?: T;
-  title?: T;
-  subtitle?: T;
-  description?: T;
-  seo?:
-    | T
-    | {
-        meta_title?: T;
-        meta_description?: T;
-        meta_keywords?: T;
-      };
-  options?:
-    | T
-    | {
-        title?: T;
-        medusa_id?: T;
-        id?: T;
-      };
-  variants?:
-    | T
-    | {
-        title?: T;
-        medusa_id?: T;
-        option_values?:
-          | T
-          | {
-              medusa_id?: T;
-              medusa_option_id?: T;
-              value?: T;
-              id?: T;
-            };
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
